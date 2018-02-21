@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import  { connect } from 'react-redux'; // the glue between react and redux
+import { selectBook } from '../actions/index';
+import { bindActionCreators } from 'redux';
 
 class BookList extends Component {
 
@@ -24,12 +26,19 @@ class BookList extends Component {
 }
 
 function mapStateToProps(state) { // state -> redux state
-	// Wgerever is returned will show up as props
+	// Wherever is returned will show up as props
 	// inside of BookList
 	return {
 		books: state.books,
 	};
 }
+// Anything returned from this function will end up as props
+// on  the Booklist container 
+function mapDisatchToProps(dispatch) {
+	// Wherever selectBook is called, the result should be
+	// passed to all our reducers
+	return bindActionCreators({ selectBook }, dispatch);
+}
 
 // Connect produces the container
-export default connect(mapStateToProps)(BookList);
+export default connect(mapStateToProps, mapDisatchToProps)(BookList);
