@@ -33,6 +33,7 @@ class PostIndex extends Component {
     );
   }
 }
+
 function mapStateToProps(state) {
   return { posts: state.posts };
 }
