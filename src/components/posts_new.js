@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createPost } from '../actions';
 class PostsNew extends Component {
 
   /**
@@ -7,23 +10,28 @@ class PostsNew extends Component {
    * @param {Obj} field Contains events handlers of the field, a single piece of state.
    */
   renderField(field) {
+    const { meta: {touched, error } } = field; // Destructuring
+    const className = `form-group ${touched && error ? 'has-danger' : ''}`;
     return(
       <div 
-        className="form-group">
+        className={className}>
         <label>{field.label}</label>
         <input 
           className="form-control"
           type="text"
           {...field.input} // ---> onChange={field.input.onChange}, onChange={field.input.onBlur}, etc
         />
-        {field.meta.error} 
+        <div 
+          className="text-help">
+          {touched ? error : ''} 
+        </div>
       </div>
     );
   }
 
   onSubmit(values) {
     console.log('values', values);
-    
+    this.props.createPost(values);  
   }
   
 
@@ -52,6 +60,11 @@ class PostsNew extends Component {
           className="btn btn-primary">
             Submit
         </button>
+        <Link 
+          to="/"
+          className="btn btn-danger">
+          Cancel
+        </Link>
       </form>
     );
   }
@@ -91,4 +104,6 @@ function validate(values) {
 export default reduxForm({ // reduxForm ---> communicate between the component and the formReducer
   form: 'PostsNewForm', // provide a unique name for the form
   validate,
-})(PostsNew);
+})(
+  connect(null, { createPost })(PostsNew)
+);
