@@ -4,7 +4,7 @@ class PostsNew extends Component {
 
   /**
    * Renders fields
-   * @param {Obj} field Contains events handlers of the field
+   * @param {Obj} field Contains events handlers of the field, a single piece of state.
    */
   renderField(field) {
     return(
@@ -16,14 +16,22 @@ class PostsNew extends Component {
           type="text"
           {...field.input} // ---> onChange={field.input.onChange}, onChange={field.input.onBlur}, etc
         />
+        {field.meta.error} 
       </div>
     );
+  }
+
+  onSubmit(values) {
+    console.log('values', values);
+    
   }
   
 
   render() {
+    const { handleSubmit } = this.props; // -> props bunch of methods of form
+    
     return (
-      <form>
+      <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
         <Field
           label="Title For Post"
           name="title"
@@ -39,6 +47,11 @@ class PostsNew extends Component {
           name="content"
           component={this.renderField} 
         />
+        <button 
+          type="submit"
+          className="btn btn-primary">
+            Submit
+        </button>
       </form>
     );
   }
@@ -50,10 +63,23 @@ class PostsNew extends Component {
  */
 function validate(values) {
   const errors = {};
-
+  // errors.fieldName
+  
   // Validates the inputs from 'values' 
+  if (values.title && values.title.lenght < 3) {
+    errors.title = 'Title is too short';
+  }
+
   if (!values.title) {
     errors.title = 'Enter a title !!';
+  }
+
+  if (!values.categories) {
+    errors.categories = 'Enter some categories !!';
+  }
+
+  if (!values.content) {
+    errors.content = 'Enter some content please !!';
   }
 
   // Is errors is empty, the form is fine to submit
