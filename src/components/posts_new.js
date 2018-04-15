@@ -31,7 +31,10 @@ class PostsNew extends Component {
 
   onSubmit(values) {
     console.log('values', values);
-    this.props.createPost(values);  
+    this.props.createPost(values, () => {
+      // We passed a callback to redirect to '/' after post is created
+      this.props.history.push('/'); // -> this.props.history is a bundle obj from Route component
+    });  
   }
   
 
