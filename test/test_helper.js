@@ -12,18 +12,10 @@ import reducers from '../src/reducers';
 // Set up testing enviroment to run like a browser in the command line
 global.document = jsdom.jsdom('<!doctype html><html><body></body></html>');
 global.window = global.document.defaultView;
-
-// Build 'renderComponent' helper that should render given react class
-
-// Build helper for simulating events
-
-// Set up chai-jquery
-
 global.navigator = global.window.navigator;
 const $ = _$(window);
 
-chaiJquery(chai, chai.util, $);
-
+// Build 'renderComponent' helper that should render given react class
 function renderComponent(ComponentClass, props = {}, state = {}) {
   const componentInstance =  TestUtils.renderIntoDocument(
     <Provider store={createStore(reducers, state)}>
@@ -31,14 +23,19 @@ function renderComponent(ComponentClass, props = {}, state = {}) {
     </Provider>
   );
 
-  return $(ReactDOM.findDOMNode(componentInstance));
+  return $(ReactDOM.findDOMNode(componentInstance)); // produces HTML
 }
 
+// Build helper for simulating events
 $.fn.simulate = function(eventName, value) {
   if (value) {
     this.val(value);
   }
   TestUtils.Simulate[eventName](this[0]);
 };
+
+// Set up chai-jquery
+chaiJquery(chai, chai.util, $);
+
 
 export {renderComponent, expect};
