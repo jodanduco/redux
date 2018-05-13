@@ -6,7 +6,11 @@ import { createStore, applyMiddleware } from 'redux';
 import App from './components/app';
 import reducers from './reducers';
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
+const enhacers = compose(
+  window.devToolsExtension ? window.devToolsExtension() : f => f
+);
+
+const createStoreWithMiddleware = applyMiddleware()(createStore, enhacers);
 
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
