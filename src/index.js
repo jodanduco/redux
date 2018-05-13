@@ -10,10 +10,10 @@ const enhacers = compose(
   window.devToolsExtension ? window.devToolsExtension() : f => f
 );
 
-const createStoreWithMiddleware = applyMiddleware()(createStore, enhacers);
+const createStoreWithMiddleware = applyMiddleware()(createStore);
 
 ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
+  <Provider store={createStoreWithMiddleware(reducers, enhacers)}>
     <App />
   </Provider>
   , document.querySelector('.container'));
